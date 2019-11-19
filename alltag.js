@@ -33,7 +33,7 @@
         this.P++;
         return r;
       }
-      else if (c >= 'A' && c <= 'Z' || c >= 'a' && c <= 'z' || c == '_') {
+      else if (c >= 'A' && c <= 'Z' || c >= 'a' && c <= 'z' || c >= '0' && c <= '9' || c == '_') {
         for (j = this.P + 1; j < this.S.length; j++) {
           c = this.S[j];
           if (!(c >= 'A' && c <= 'Z' || c >= 'a' && c <= 'z' || c >= '0' && c <= '9' || c == '_')) break;
