@@ -107,7 +107,7 @@
   Parser.prototype.parseAnd = function() {
     var a = [];
     var x;
-    while (x = this.parseUnary()) {
+    for (x = this.parseUnary(); x; x = this.parseUnary()) {
       a.push(x);
     }
     if (a.length) {

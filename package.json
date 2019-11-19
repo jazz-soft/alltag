@@ -5,11 +5,13 @@
   "main": "alltag.js",
   "scripts": {
     "test": "nyc mocha",
+    "lint": "eslint alltag.js test",
     "coverage": "nyc report --reporter=text-lcov | coveralls"
   },
   "author": "jazz-soft (https://jazz-soft.net/)",
   "devDependencies": {
     "coveralls": "^3.0.7",
+    "eslint": "^6.6.0",
     "mocha": "^6.2.2",
     "nyc": "^14.1.1"
   },
