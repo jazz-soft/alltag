@@ -83,7 +83,7 @@
 
   Parser.prototype.error = function() {
     if (this.T) throw new Error('Unexpected token: ( ' + this.T.s + ' ) at position ' + this.T.p);
-    else throw new Error('Unexpected end of line at position ' + this.S.length);
+    else throw new Error('Unexpected end of the line at position ' + this.S.length);
   };
 
   Parser.prototype.parseOr = function() {
