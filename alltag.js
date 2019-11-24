@@ -17,6 +17,9 @@
     this.T = this.getToken();
   }
 
+  function isAlphaNum(c) { return c >= 'A' && c <= 'Z' || c >= 'a' && c <= 'z' || c >= '0' && c <= '9' || c == '_'; } 
+  function isExtended(c) { return isAlphaNum(c) || c == '+' || c == '-' || c == '>' || c == '<' || c == '='; } 
+
   Parser.prototype.getToken = function() {
     var c, j, k, r;
     for (; this.P < this.S.length; this.P++) {
@@ -28,17 +31,19 @@
         }
         this.P = j - 1;
       }
-      else if (c == '(' || c == ')' || c == '!' || c == ',') {
+      else if (c == '(' || c == ')' || c == '!' || c == ',' || c == ':') {
         r = { p: this.P, s: c, t: c };
         this.P++;
         return r;
       }
-      else if (c >= 'A' && c <= 'Z' || c >= 'a' && c <= 'z' || c >= '0' && c <= '9' || c == '_') {
+      else if (isExtended(c)) {
+        k = isAlphaNum(c);
         for (j = this.P + 1; j < this.S.length; j++) {
           c = this.S[j];
-          if (!(c >= 'A' && c <= 'Z' || c >= 'a' && c <= 'z' || c >= '0' && c <= '9' || c == '_')) break;
+          if (isExtended(c)) k = k && isAlphaNum(c);
+          else break;
         }
-        r = { p: this.P, s: this.S.substring(this.P, j), t: 'T' };
+        r = { p: this.P, s: this.S.substring(this.P, j), t: k ? 'A' : 'E' };
         this.P = j;
         return r;
       }
@@ -130,16 +135,32 @@
   };
 
   Parser.prototype.parseAtom = function() {
-    var x;
+    var x, t;
     if (!this.T) return;
-    if (this.T.t == 'T') {
-      x = ['tag', this.T.s];
+    if (this.T.t == 'E') {
+      x = ['tag', '', this.T.s];
       this.T = this.getToken();
       return x;
     }
     else if (this.T.t == 'R') {
-      x = ['regex', this.T.s];
+      x = ['tag', '', this.T.s];
       this.T = this.getToken();
+      return x;
+    }
+    else if (this.T.t == 'A') {
+      t = this.T;
+      this.T = this.getToken();
+      if (this.T && this.T.t == ':') {
+        this.T = this.getToken();
+        if (this.T && (this.T.t == 'A' || this.T.t == 'E' || this.T.t == 'R')) {
+          x = ['tag', t.s, this.T.s];
+          this.T = this.getToken();
+        }
+        else this.error();
+      }
+      else {
+        x = ['tag', '', t.s];
+      }
       return x;
     }
     else if (this.T.t == '(') {
