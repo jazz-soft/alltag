@@ -2,8 +2,12 @@
 var alltag = require('..');
 
 describe('alltag parser', function() {
+  it('empty', function() {
+    var x = alltag.parse('');
+    assert.equal(x, undefined);
+  });
   it('a b', function() {
-    var x = alltag.parse(' a b ');
+    var x = alltag.parse(' a \tb ');
     var y = [ 'and', [ 'tag', '', 'a' ], [ 'tag', '', 'b' ] ];
     assert.equal(JSON.stringify(x), JSON.stringify(y));
   });
@@ -63,11 +67,23 @@ describe('alltag parser', function() {
   it('1+:1 - throws', function() {
     assert.throws(function() { alltag.parse('1+:1'); });
   });
+  it(': - throws', function() {
+    assert.throws(function() { alltag.parse(' : '); });
+  });
+  it('! - throws', function() {
+    assert.throws(function() { alltag.parse(' ! '); });
+  });
+  it('/ - throws', function() {
+    assert.throws(function() { alltag.parse(' / '); });
+  });
   it('% - throws', function() {
-    assert.throws(function() { alltag.parse('%'); });
+    assert.throws(function() { alltag.parse(' % '); });
   });
   it('( a - throws', function() {
     assert.throws(function() { alltag.parse('( a'); });
+  });
+  it('( ) - throws', function() {
+    assert.throws(function() { alltag.parse('( )'); });
   });
   it('a ) - throws', function() {
     assert.throws(function() { alltag.parse('a )'); });
@@ -80,5 +96,9 @@ describe('alltag parser', function() {
   });
   it('/./_ - throws', function() {
     assert.throws(function() { alltag.parse('/./_'); });
+  });
+  it('validator - throws', function() {
+    assert.throws(function() { alltag.parse('a', function() { throw new Error('Throw it!'); }); });
+    assert.throws(function() { alltag.parse('a:b', function() { throw new Error('Throw it!'); }); });
   });
 });

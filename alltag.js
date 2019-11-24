@@ -11,8 +11,9 @@
   }
 })(this, function() {
 
-  function Parser(S) {
+  function Parser(S, V) {
     this.S = S;
+    this.V = V || function() {};
     this.P = 0;
     this.T = this.getToken();
   }
@@ -138,11 +139,13 @@
     var x, t;
     if (!this.T) return;
     if (this.T.t == 'E') {
+      this.V('', this.T.p, this.T.s, this.T.p);
       x = ['tag', '', this.T.s];
       this.T = this.getToken();
       return x;
     }
     else if (this.T.t == 'R') {
+      this.V('', this.T.p, this.T.s, this.T.p);
       x = ['tag', '', this.T.s];
       this.T = this.getToken();
       return x;
@@ -153,12 +156,14 @@
       if (this.T && this.T.t == ':') {
         this.T = this.getToken();
         if (this.T && (this.T.t == 'A' || this.T.t == 'E' || this.T.t == 'R')) {
+          this.V(t.s, t.p, this.T.s, this.T.p);
           x = ['tag', t.s, this.T.s];
           this.T = this.getToken();
         }
         else this.error();
       }
       else {
+        this.V('', t.p, t.s, t.p);
         x = ['tag', '', t.s];
       }
       return x;
@@ -173,8 +178,8 @@
   };
 
   return {
-    parse: function(s) {
-      var parser = new Parser(s);
+    parse: function(s, v) {
+      var parser = new Parser(s, v);
       return parser.parse();
     }
   };
