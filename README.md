@@ -10,8 +10,10 @@ I use this script in my own projects at both front-end and back-end side.
 It may fit your needs as well...
 
 Imagine, you have an online movie database,
-and want your visitors to be able to write queries like this:  
-`(comedy, action) !horror (/batman/, /joker/)`,  
+and want your visitors to be able to write queries like this:
+
+`(comedy, action) !horror (/batman/, /joker/)`,
+
 that means the movie should be `comedy` OR `action`, NOT `horror`,
 and have the title matching either `/batman/` OR `/joker/`.
 
@@ -23,6 +25,22 @@ and have the title matching either `/batman/` OR `/joker/`.
       [ 'or', [ 'tag', '', '/batman/' ], [ 'tag', '', '/joker/' ] ]
     ]
 
-and it's up to you how to handle the parse result.
+and it's up to you how to handle the result.
+
+### Query syntax
+
+Valid tag must be a combination of alphanumeric characters `/[a-zA-z0-9_]/` plus additional characters `/[<>=+-]/`, or be a valid regular expression (in this case, it can contain any characters):
+
+`robin` => `[ 'tag', '', 'robin' ]`  
+`/\bburt\s+ward\b/i` => `[ 'tag', '', '/\bburt\s+ward\b/i' ]`  
+`1966-1968` => `[ 'tag', '', '1966-1968' ]`
+
+Tag may have an alphanumeric prefix followed by the colon:  
+`director:/burton/` => `[ 'tag', 'director', '/burton/' ]`
+
+Logic expressions can be AND-ed by space, OR-ed by a comma, NOT-ed by an exclamation mark, or combined with brackets:  
+`(joker, penguin) !catwoman` =>  
+`[ 'and', [ 'or', [ 'tag', '', 'joker' ], [ 'tag', '', 'penguin' ] ], [ 'not', [ 'tag', '', 'catwoman' ] ] ]
+`
 
 To be continued...
