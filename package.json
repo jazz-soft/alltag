@@ -1,13 +1,18 @@
 {
   "name": "alltag",
   "version": "0.0.2",
-  "description": "coming soon...",
+  "description": "combine query tags into simple logic expressions",
   "main": "alltag.js",
   "scripts": {
     "test": "nyc mocha",
     "lint": "eslint alltag.js test",
     "coverage": "nyc report --reporter=text-lcov | coveralls"
   },
+  "keywords": [
+    "tags",
+    "query",
+    "logic"
+  ],
   "author": "jazz-soft (https://jazz-soft.net/)",
   "devDependencies": {
     "coveralls": "^3.0.7",
