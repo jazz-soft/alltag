@@ -28,19 +28,73 @@ and it's up to you how to handle the result.
 
 ### Query syntax
 
-Valid tag must be a combination of alphanumeric characters `/[a-zA-Z0-9_]/` plus additional characters `/[<>=+-]/`, or be a valid regular expression (in this case, it can contain any characters):
+Valid tag must be a combination of alphanumeric characters `/[a-zA-Z0-9_]/` plus some additional characters `/[<>=+-]/`,
+or be a valid regular expression (in this case, it can contain any characters):
 
 `robin` => `[ 'tag', '', 'robin' ]`  
-`/\bburt\s+ward\b/i` => `[ 'tag', '', '/\bburt\s+ward\b/i' ]`  
+`/\bburt\s+ward\b/i` => `[ 'tag', '', '/\\bburt\\s+ward\\b/i' ]`  
 `1966-1968` => `[ 'tag', '', '1966-1968' ]`
 
 Tags may have an alphanumeric prefix followed by the colon:
 
-`director:/burton/` => `[ 'tag', 'director', '/burton/' ]`
+`director:/burton|nolan/` => `[ 'tag', 'director', '/burton|nolan/' ]`
 
-Expressions can be AND-ed by space, OR-ed by a comma, NOT-ed by an exclamation mark, or combined with the brackets:
+Expressions can be AND-ed by a space, OR-ed by a comma, NOT-ed by an exclamation mark, or combined with the brackets:
 
 `(joker, penguin) !catwoman` =>  
 `[ 'and', [ 'or', [ 'tag', '', 'joker' ], [ 'tag', '', 'penguin' ] ], [ 'not', [ 'tag', '', 'catwoman' ] ] ]`
 
-To be continued...
+### Install
+
+`npm install alltag --save`  
+or clone it from the [`Github`](https://github.com/jazz-soft/alltag)
+
+### Usage
+
+#### Front end:
+
+    <script src="alltag.js"></script>
+    // ...
+    var query = ...
+    try {
+      var ast = alltag.parse(query);
+      // ...
+    }
+    catch (err) { alert(err.message); }
+
+#### Back end:
+
+    var alltag = require('alltag');
+    // ...
+    var query = ...
+    try {
+      var ast = alltag.parse(query);
+      // ...
+    }
+    catch (err) { console.log(err.message); }
+
+#### Testing the objects:
+
+    // The actual test will depend on your object's structure,
+    // but the overall logic will be the same.
+    
+    function passes(obj, ast) {
+      var m;
+      if (ast[0] == 'and') {
+        for (m = 1; m < ast.length; m++) if (!passes(obj, ast[m])) return false;
+        return true;
+      }
+      if (ast[0] == 'or') {
+        for (m = 1; m < ast.length; m++) if (passes(obj, ast[m])) return true;
+        return false;
+      }
+      if (ast[0] == 'not') return !passes(obj, ast[1]);
+      if (ast[0] == 'tag') {
+        if (ast[2][0] == '/') {
+          m = ast[2].match(/^\/(.*)\/([^/]*)$/);
+          m = new RegExp(m[1], 'i');  // or: m = new RegExp(m[1], m[2]);
+          return !!obj.title.match(m);
+        }
+        return obj.tags.includes(ast[2]);
+      }
+    }
