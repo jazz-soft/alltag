@@ -98,3 +98,33 @@ or clone it from the [`Github`](https://github.com/jazz-soft/alltag)
         return obj.tags.includes(ast[2]);
       }
     }
+
+#### Additional restrictions:
+
+    // To introduce additional restrictions on the tag values,
+    // pass a validator function as a second argument to the parser:
+    
+    ast = alltag.parse(query, function(s1, p1, s2, p2) { ... });
+    
+    // where
+    // s1 - the string value of the prefix
+    // p1 - it's position in the input string
+    // s2 - the string value of the tag
+    // p2 - it's position in the input string
+    // if there is no prefix, s1 = '' and p1 = p2
+    // e.g.:
+    
+    function requirePrefix(s1, p1, s2, p2) {
+      if (s1 == '') throw new Error('Prefix required at position ' + p1);
+    }
+    
+    function noRegEx(s1, p1, s2, p2) {
+      if (s2[0] == '/') throw new Error('Unexpected character ( / ) at position ' + p2);
+    }
+    
+    function validDirection(s1, p1, s2, p2) {
+      if (!['north', 'west', 'south', 'east'].includes(s2) {
+        throw new Error('Invalid tag ( ' + s2 + ' ) at position ' + p2);
+      }
+    }
+
