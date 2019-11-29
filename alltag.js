@@ -59,7 +59,7 @@
           }
         }
         if (this.S[j] != '/') {
-          throw new Error('Incomplete regular expression: ( ' + this.S.substring(this.P, j) + ' ) at position ' + this.P);
+          throw new Error('Incomplete regular expression ( ' + this.S.substring(this.P, j) + ' ) at position ' + this.P);
         }
         j++;
         for (k = j; k < this.S.length; k++) {
@@ -69,13 +69,13 @@
         c = this.S.substring(j, k);
         j = k;
         if (c != '' && c != 'i') {
-          throw new Error('Invalid regular expression: ( ' + this.S.substring(this.P, j) + ' ) at position ' + this.P);
+          throw new Error('Invalid regular expression ( ' + this.S.substring(this.P, j) + ' ) at position ' + this.P);
         }
         r = { p: this.P, s: this.S.substring(this.P, j), t: 'R' };
         this.P = j;
         return r;
       }
-      else throw new Error('Unexpected character: ( ' + c + ' ) at position ' + this.P);
+      else throw new Error('Unexpected character ( ' + c + ' ) at position ' + this.P);
     }
   };
 
@@ -88,7 +88,7 @@
   };
 
   Parser.prototype.error = function() {
-    if (this.T) throw new Error('Unexpected token: ( ' + this.T.s + ' ) at position ' + this.T.p);
+    if (this.T) throw new Error('Unexpected token ( ' + this.T.s + ' ) at position ' + this.T.p);
     else throw new Error('Unexpected end of the line at position ' + this.S.length);
   };
 
@@ -181,7 +181,9 @@
     parse: function(s, v) {
       var parser = new Parser(s, v);
       return parser.parse();
-    }
+    },
+    'true': function() { return ['true']; },
+    'false': function() { return ['false']; }
   };
 
 });

@@ -119,7 +119,7 @@ or clone it from the [`Github`](https://github.com/jazz-soft/alltag)
     }
     
     function noRegEx(s1, p1, s2, p2) {
-      if (s2[0] == '/') throw new Error('Unexpected character ( / ) at position ' + p2);
+      if (s2[0] == '/') throw new Error('Unexpected RegEx ( ' + s2 + ' ) at position ' + p2);
     }
     
     function validDirection(s1, p1, s2, p2) {

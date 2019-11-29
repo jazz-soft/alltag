@@ -1,6 +1,6 @@
 {
   "name": "alltag",
-  "version": "0.0.2",
+  "version": "0.0.3",
   "description": "combine query tags into simple logic expressions",
   "main": "alltag.js",
   "scripts": {

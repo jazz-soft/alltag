@@ -101,4 +101,10 @@ describe('alltag parser', function() {
     assert.throws(function() { alltag.parse('a', function() { throw new Error('Throw it!'); }); });
     assert.throws(function() { alltag.parse('a:b', function() { throw new Error('Throw it!'); }); });
   });
+  it('true()', function() {
+    assert.equal(JSON.stringify(alltag.true()), JSON.stringify(['true']));
+  });
+  it('false()', function() {
+    assert.equal(JSON.stringify(alltag.false()), JSON.stringify(['false']));
+  });
 });
