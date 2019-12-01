@@ -16,7 +16,7 @@ and want your visitors to be able to write queries like this:
 that means the movie should be `comedy` OR `action`, NOT `horror`,
 and have the title matching either `/batman/` OR `/joker/`.
 
-**alltag** parses the query into the AST object *(say hi to the LISP fans)*:
+**alltag** parses the query string into the AST object *(say hi to the LISP fans)*:
 
     [ 'and',
       [ 'or', [ 'tag', '', 'comedy' ], [ 'tag', '', 'action' ] ],
@@ -29,7 +29,7 @@ and it's up to you how to handle the result.
 ### Query syntax
 
 Valid tag must be a combination of alphanumeric characters `/[a-zA-Z0-9_]/` plus some additional characters `/[<>=+-]/`,
-or be a valid regular expression (in this case, it can contain any characters):
+or be a valid regular expression (in this case, it may contain any characters):
 
 `robin` => `[ 'tag', '', 'robin' ]`  
 `/\bburt\s+ward\b/i` => `[ 'tag', '', '/\\bburt\\s+ward\\b/i' ]`  
@@ -80,15 +80,27 @@ or clone it from the [`Github`](https://github.com/jazz-soft/alltag)
     
     function passes(obj, ast) {
       var m;
+      if (ast[0] == 'true') {
+        return true;
+      }
+      if (ast[0] == 'false') {
+        return false;
+      }
       if (ast[0] == 'and') {
-        for (m = 1; m < ast.length; m++) if (!passes(obj, ast[m])) return false;
+        for (m = 1; m < ast.length; m++) {
+          if (!passes(obj, ast[m])) return false;
+        }
         return true;
       }
       if (ast[0] == 'or') {
-        for (m = 1; m < ast.length; m++) if (passes(obj, ast[m])) return true;
+        for (m = 1; m < ast.length; m++) {
+          if (passes(obj, ast[m])) return true;
+        }
         return false;
       }
-      if (ast[0] == 'not') return !passes(obj, ast[1]);
+      if (ast[0] == 'not') {
+        return !passes(obj, ast[1]);
+      }
       if (ast[0] == 'tag') {
         if (ast[2][0] == '/') {
           m = ast[2].match(/^\/(.*)\/([^/]*)$/);
@@ -115,11 +127,15 @@ or clone it from the [`Github`](https://github.com/jazz-soft/alltag)
     // e.g.:
     
     function requirePrefix(s1, p1, s2, p2) {
-      if (s1 == '') throw new Error('Prefix required at position ' + p1);
+      if (s1 == '') {
+        throw new Error('Prefix required at position ' + p1);
+      }
     }
     
     function noRegEx(s1, p1, s2, p2) {
-      if (s2[0] == '/') throw new Error('Unexpected RegEx ( ' + s2 + ' ) at position ' + p2);
+      if (s2[0] == '/') {
+        throw new Error('Unexpected RegEx ( ' + s2 + ' ) at position ' + p2);
+      }
     }
     
     function validDirection(s1, p1, s2, p2) {
