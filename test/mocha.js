@@ -107,4 +107,8 @@ describe('alltag parser', function() {
   it('false()', function() {
     assert.equal(JSON.stringify(alltag.false()), JSON.stringify(['false']));
   });
+  it('not()', function() {
+    assert.equal(JSON.stringify(alltag.not(alltag.false())), JSON.stringify(['true']));
+    assert.equal(JSON.stringify(alltag.not(alltag.true())), JSON.stringify(['false']));
+  });
 });

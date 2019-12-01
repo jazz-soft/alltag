@@ -129,8 +129,7 @@
       this.T = this.getToken();
       x = this.parseUnary();
       if (!x) this.error();
-      if (x[0] == 'not') return x[1];
-      else return ['not', x];
+      return _not(x);
     }
     else return this.parseAtom();
   };
@@ -177,13 +176,35 @@
     }
   };
 
+  function _clone(x) {
+    if (x instanceof Array) {
+      var a = [];
+      for (var i = 0; i < x.length; i++) a.push(_clone(x[i]));
+      return a;
+    }
+    return x;
+  }
+
+  function _true() { return ['true']; }
+  function _false() { return ['false']; }
+
+  function _not(x) {
+    if (x[0] == 'true') return _false();
+    if (x[0] == 'false') return _true();
+    if (x[0] == 'not') return x[1];
+    return ['not', x];
+  }
+
   return {
     parse: function(s, v) {
       var parser = new Parser(s, v);
       return parser.parse();
     },
-    'true': function() { return ['true']; },
-    'false': function() { return ['false']; }
+    not: function(x) {
+      return _not(_clone(x));
+    },
+    'true': _true,
+    'false': _false
   };
 
 });
