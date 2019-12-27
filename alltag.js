@@ -189,9 +189,20 @@
   function _false() { return ['false']; }
 
   function _not(x) {
+    var i, z;
     if (x[0] == 'true') return _false();
     if (x[0] == 'false') return _true();
     if (x[0] == 'not') return x[1];
+    if (x[0] == 'and') {
+      z = ['or'];
+      for (i = 1; i < x.length; i++) z.push(_not(x[i]));
+      return z;
+    }
+    if (x[0] == 'or') {
+      z = ['and'];
+      for (i = 1; i < x.length; i++) z.push(_not(x[i]));
+      return z;
+    }
     return ['not', x];
   }
 
