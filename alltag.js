@@ -112,13 +112,14 @@
 
   Parser.prototype.parseAnd = function() {
     var a = [];
-    var x;
+    var i, x;
     for (x = this.parseUnary(); x; x = this.parseUnary()) {
       a.push(x);
     }
     if (a.length) {
-      if (a.length == 1) return a[0];
-      else return ['and'].concat(a);
+      x = a[0];
+      for (i = 1; i < a.length; i++) x = _and(x, a[i]);
+      return x;
     }
   };
 
@@ -206,6 +207,60 @@
     return ['not', x];
   }
 
+  function _and(x, y) {
+    var i, j, A, B, C;
+    if (x[0] == 'false') return _false();
+    if (x[0] == 'true') return y;
+    A = x[0] == 'and' ? x.slice(1) : [ x ];
+    B = y[0] == 'and' ? y.slice(1) : [ y ];
+    C = A.slice();
+    for (i = 0; i < B.length; i++) {
+      if (B[i][0] == 'true') continue;
+      if (B[i][0] == 'false') return _false();
+      for (j = 0; j < A.length; j++) {
+        if (_equal(A[j], B[i])) break;
+        if (_compl(A[j], B[i])) return _false();
+      }
+      if (j == A.length) C.push(B[i]);
+    }
+    return C.length == 1 ? C[0] : ['and'].concat(C);
+  }
+
+  function _equal(x, y) {
+    var i, j, k;
+    if (x == y) return true;
+    if (x[0] != y[0] || x.length != y.length) return false;
+    if (x[0] == 'tag') return x[1] == y[1] && x[2] == y[2];
+    for (i = 1; i < x.length; i++) {
+      k = false;
+      for (j = 1; j < y.length; j++) {
+        if (_equal(x[i], y[j])) {
+          k = true;
+          break;
+        }
+      }
+      if (!k) return false;
+    }
+    return true;
+  }
+
+  function _compl(x, y) {
+    var i, j, k;
+    if (x == y) return false;
+    if (x[0] == 'not') {
+      if (y[0] == 'not') return _compl(x[1], y[1]);
+      else return _equal(x[1], y);
+    }
+    else if (y[0] == 'not') return _equal(x, y[1]);
+    if (x[0] == 'true') return y[0] == 'false';
+    if (x[0] == 'false') return y[0] == 'true';
+    if (x[0] == 'and' && y[0] == 'or' || x[0] == 'or' && y[0] == 'and') {
+      if (x.length < y.length) return _equal(_not(x), y);
+      else return _equal(x, _not(y));
+    }
+    return false;
+  }
+
   return {
     parse: function(s, v) {
       var parser = new Parser(s, v);
@@ -213,6 +268,9 @@
     },
     not: function(x) {
       return _not(_clone(x));
+    },
+    and: function(x, y) {
+      return _and(_clone(x), _clone(y));
     },
     'true': _true,
     'false': _false

@@ -113,4 +113,14 @@ describe('alltag parser', function() {
     assert.equal(JSON.stringify(alltag.not(alltag.parse('!a, !b'))), JSON.stringify(alltag.parse('a b')));
     assert.equal(JSON.stringify(alltag.not(alltag.parse('!a !b'))), JSON.stringify(alltag.parse('a, b')));
   });
+  it('and()', function() {
+    assert.equal(JSON.stringify(alltag.and(alltag.true(), alltag.true())), JSON.stringify(['true']));
+    assert.equal(JSON.stringify(alltag.and(alltag.true(), alltag.false())), JSON.stringify(['false']));
+    assert.equal(JSON.stringify(alltag.and(alltag.false(), alltag.true())), JSON.stringify(['false']));
+    assert.equal(JSON.stringify(alltag.parse('(a b) (a c)')), JSON.stringify(alltag.parse('a b c')));
+    assert.equal(JSON.stringify(alltag.parse('a a a')), JSON.stringify(alltag.parse('a')));
+    assert.equal(JSON.stringify(alltag.parse('a !a')), JSON.stringify(['false']));
+    assert.equal(JSON.stringify(alltag.parse('(a b) (c !a)')), JSON.stringify(['false']));
+    assert.equal(JSON.stringify(alltag.parse('(a b) !(a, b)')), JSON.stringify(['false']));
+  });
 });
