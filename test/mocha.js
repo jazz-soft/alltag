@@ -120,10 +120,13 @@ describe('alltag parser', function() {
     assert.equal(JSON.stringify(alltag.and(t, t)), JSON.stringify(t));
     assert.equal(JSON.stringify(alltag.and(t, f)), JSON.stringify(f));
     assert.equal(JSON.stringify(alltag.and(f, t)), JSON.stringify(f));
+    assert.equal(JSON.stringify(alltag.and(f, f)), JSON.stringify(f));
+
     assert.equal(JSON.stringify(alltag.and(t, a)), JSON.stringify(a));
     assert.equal(JSON.stringify(alltag.and(a, t)), JSON.stringify(a));
     assert.equal(JSON.stringify(alltag.and(f, a)), JSON.stringify(f));
     assert.equal(JSON.stringify(alltag.and(a, f)), JSON.stringify(f));
+
     assert.equal(JSON.stringify(alltag.parse('(a b) (a c)')), JSON.stringify(alltag.parse('a b c')));
     assert.equal(JSON.stringify(alltag.parse('!a !a !a')), JSON.stringify(alltag.parse('!a')));
     assert.equal(JSON.stringify(alltag.parse('a a a')), JSON.stringify(a));
@@ -131,5 +134,27 @@ describe('alltag parser', function() {
     assert.equal(JSON.stringify(alltag.parse('!a b a')), JSON.stringify(f));
     assert.equal(JSON.stringify(alltag.parse('(a b) (c !a)')), JSON.stringify(f));
     assert.equal(JSON.stringify(alltag.parse('(a b) !(a, b)')), JSON.stringify(f));
+  });
+  it('or()', function() {
+    var a = alltag.parse('a');
+    var t = alltag.true();
+    var f = alltag.false();
+    assert.equal(JSON.stringify(alltag.or(t, t)), JSON.stringify(t));
+    assert.equal(JSON.stringify(alltag.or(t, f)), JSON.stringify(t));
+    assert.equal(JSON.stringify(alltag.or(f, t)), JSON.stringify(t));
+    assert.equal(JSON.stringify(alltag.or(f, f)), JSON.stringify(f));
+
+    assert.equal(JSON.stringify(alltag.or(t, a)), JSON.stringify(t));
+    assert.equal(JSON.stringify(alltag.or(a, t)), JSON.stringify(t));
+    assert.equal(JSON.stringify(alltag.or(f, a)), JSON.stringify(a));
+    assert.equal(JSON.stringify(alltag.or(a, f)), JSON.stringify(a));
+
+    assert.equal(JSON.stringify(alltag.parse('(a, b), (a, c)')), JSON.stringify(alltag.parse('a, b, c')));
+    assert.equal(JSON.stringify(alltag.parse('!a, !a, !a')), JSON.stringify(alltag.parse('!a')));
+    assert.equal(JSON.stringify(alltag.parse('a, a, a')), JSON.stringify(a));
+    assert.equal(JSON.stringify(alltag.parse('a, !a')), JSON.stringify(t));
+    assert.equal(JSON.stringify(alltag.parse('!a, b, a')), JSON.stringify(t));
+    assert.equal(JSON.stringify(alltag.parse('(a, b), (c, !a)')), JSON.stringify(t));
+    assert.equal(JSON.stringify(alltag.parse('(a, b), !(a b)')), JSON.stringify(t));
   });
 });

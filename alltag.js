@@ -94,6 +94,7 @@
 
   Parser.prototype.parseOr = function() {
     if (!this.T) return;
+    var i;
     var a = [];
     var x = this.parseAnd();
     if (!x) this.error();
@@ -105,8 +106,9 @@
       a.push(x);
     }
     if (a.length) {
-      if (a.length == 1) return a[0];
-      else return ['or'].concat(a);
+      x = a[0];
+      for (i = 1; i < a.length; i++) x = _or(x, a[i]);
+      return x;
     }
   };
 
@@ -226,6 +228,25 @@
     return C.length == 1 ? C[0] : ['and'].concat(C);
   }
 
+  function _or(x, y) {
+    var i, j, A, B, C;
+    if (x[0] == 'true') return _true();
+    if (x[0] == 'false') return y;
+    A = x[0] == 'or' ? x.slice(1) : [ x ];
+    B = y[0] == 'or' ? y.slice(1) : [ y ];
+    C = A.slice();
+    for (i = 0; i < B.length; i++) {
+      if (B[i][0] == 'false') continue;
+      if (B[i][0] == 'true') return _true();
+      for (j = 0; j < A.length; j++) {
+        if (_equal(A[j], B[i])) break;
+        if (_compl(A[j], B[i])) return _true();
+      }
+      if (j == A.length) C.push(B[i]);
+    }
+    return C.length == 1 ? C[0] : ['or'].concat(C);
+  }
+
   function _equal(x, y) {
     var i, j, k;
     if (x == y) return true;
@@ -271,6 +292,9 @@
     },
     and: function(x, y) {
       return _and(_clone(x), _clone(y));
+    },
+    or: function(x, y) {
+      return _or(_clone(x), _clone(y));
     },
     'true': _true,
     'false': _false
