@@ -275,10 +275,7 @@
     else if (y[0] == 'not') return _equal(x, y[1]);
     if (x[0] == 'true') return y[0] == 'false';
     if (x[0] == 'false') return y[0] == 'true';
-    if (x[0] == 'and' && y[0] == 'or' || x[0] == 'or' && y[0] == 'and') {
-      if (x.length < y.length) return _equal(_not(x), y);
-      else return _equal(x, _not(y));
-    }
+    if (x.length == y.length && (x[0] == 'and' && y[0] == 'or' || x[0] == 'or' && y[0] == 'and')) return _equal(_not(x), y);
     return false;
   }
 

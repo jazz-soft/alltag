@@ -16,7 +16,7 @@ and want your visitors to be able to write queries like this:
 that means the movie should be `comedy` OR `action`, NOT `horror`,
 and have the title matching either `/batman/` OR `/joker/`.
 
-**alltag** parses the query string into the AST object *(say hi to the LISP fans)*:
+**alltag** parses the query string into an AST object *(say hi to the LISP fans)*:
 
     [ 'and',
       [ 'or', [ 'tag', '', 'comedy' ], [ 'tag', '', 'action' ] ],
