@@ -144,3 +144,32 @@ or clone it from the [`Github`](https://github.com/jazz-soft/alltag)
       }
     }
 
+### API
+
+#### alltag.parse(query)
+
+Create logical expression from the string `query`.
+
+#### alltag.parse(query, validate)
+
+Create an logical expression from the string `query` with additional restrictions.
+
+#### alltag.not(x)
+
+Return an inversion of expression `x`
+
+#### alltag.and(x, y)
+
+Return logical conjunction of expressions `x` and `y`.
+
+#### alltag.or(x, y)
+
+Return logical disjunction of expressions `x` and `y`.
+
+#### alltag.true()
+
+Return an expression for `TRUE`.
+
+#### alltag.false()
+
+Return an expression for `FALSE`.
