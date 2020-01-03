@@ -156,7 +156,7 @@ Create an logical expression from the string `query` with additional restriction
 
 #### alltag.not(x)
 
-Return an inversion of expression `x`
+Return inversion of expression `x`.
 
 #### alltag.and(x, y)
 
