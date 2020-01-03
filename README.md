@@ -152,7 +152,7 @@ Create logical expression from the string `query`.
 
 #### alltag.parse(query, validate)
 
-Create logical expression from the string `query` with additional restrictions.
+Create logical expression from the string `query` with additional restrictions (see above).
 
 #### alltag.not(x)
 
