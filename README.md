@@ -148,11 +148,11 @@ or clone it from the [`Github`](https://github.com/jazz-soft/alltag)
 
 #### alltag.parse(query)
 
-Create logical expression from the string `query`.
+Create logical expression from string `query`.
 
 #### alltag.parse(query, validate)
 
-Create logical expression from the string `query` with additional restrictions (see above).
+Create logical expression from string `query` with additional restrictions (see above).
 
 #### alltag.not(x)
 
