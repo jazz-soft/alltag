@@ -28,7 +28,7 @@ and it's up to you how to handle the result.
 
 ### Query syntax
 
-Valid tag must be a combination of alphanumeric characters `/[a-zA-Z0-9_]/` plus some additional characters `/[<>=+-]/`,
+Valid tag must be a combination of alphanumeric characters `/[a-zA-Z0-9_$]/` plus some additional characters `/[<>=+-]/`,
 or be a valid regular expression (in this case, it may contain any characters):
 
 `robin` => `[ 'tag', '', 'robin' ]`  
