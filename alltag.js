@@ -266,7 +266,6 @@
   }
 
   function _compl(x, y) {
-    var i, j, k;
     if (x == y) return false;
     if (x[0] == 'not') {
       if (y[0] == 'not') return _compl(x[1], y[1]);
