@@ -4,8 +4,9 @@
   "description": "combine query tags into simple logic expressions",
   "main": "alltag.js",
   "scripts": {
-    "test": "nyc --reporter=lcov mocha",
-    "lint": "eslint alltag.js test"
+    "test": "nyc mocha",
+    "lint": "eslint alltag.js test",
+    "coverage": "nyc report --reporter=lcov"
   },
   "keywords": [
     "tags",
