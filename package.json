@@ -1,6 +1,6 @@
 {
   "name": "alltag",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "description": "combine query tags into simple logic expressions",
   "main": "alltag.js",
   "scripts": {
@@ -14,7 +14,6 @@
   ],
   "author": "jazz-soft (https://jazz-soft.net/)",
   "devDependencies": {
-    "coveralls": "^3.1.0",
     "eslint": "^7.22.0",
     "mocha": "^8.3.2",
     "nyc": "^15.1.0"
