@@ -29,16 +29,16 @@ and it's up to you how to handle the result.
 
 ### Query syntax
 
-Valid tag must be a combination of alphanumeric characters `/[a-zA-Z0-9_$]/` plus some additional characters `/[<>=+-]/`,
+Valid tag must be a combination of alphanumeric (plus dot) characters `/[a-zA-Z0-9_$.]/` plus some additional characters `/[<>=+-]/`,
 or be a valid regular expression (in this case, it may contain any characters):
 
 `robin` => `[ 'tag', '', 'robin' ]`  
 `/\bburt\s+ward\b/i` => `[ 'tag', '', '/\\bburt\\s+ward\\b/i' ]`  
 `1966-1968` => `[ 'tag', '', '1966-1968' ]`
 
-Tags may have an alphanumeric prefix followed by the colon:
+Tags may have an alphanumeric (plus dot) prefix followed by the colon:
 
-`director:/burton|nolan/` => `[ 'tag', 'director', '/burton|nolan/' ]`
+`director.name:/burton|nolan/` => `[ 'tag', 'director.name', '/burton|nolan/' ]`
 
 Expressions can be AND-ed by a space, OR-ed by a comma, NOT-ed by an exclamation mark, or combined with the brackets:
 

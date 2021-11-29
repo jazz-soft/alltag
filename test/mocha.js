@@ -26,9 +26,9 @@ describe('alltag parser', function() {
     var y = [ 'and', [ 'tag', '', 'a' ], [ 'or', [ 'tag', '', 'b' ], [ 'tag', '', 'c' ] ] ];
     assert.equal(JSON.stringify(x), JSON.stringify(y));
   });
-  it('_ : +-<=>', function() {
-    var x = alltag.parse('_ : +-<=>');
-    var y = [ 'tag', '_', '+-<=>' ];
+  it('_ : +-<=>.', function() {
+    var x = alltag.parse('_ : +-<=>.');
+    var y = [ 'tag', '_', '+-<=>.' ];
     assert.equal(JSON.stringify(x), JSON.stringify(y));
   });
   it('/\\/\\d+/', function() {

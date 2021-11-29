@@ -19,7 +19,7 @@
     this.T = this.getToken();
   }
 
-  function isAlphaNum(c) { return c >= 'A' && c <= 'Z' || c >= 'a' && c <= 'z' || c >= '0' && c <= '9' || c == '_' || c == '$'; } 
+  function isAlphaNum(c) { return c >= 'A' && c <= 'Z' || c >= 'a' && c <= 'z' || c >= '0' && c <= '9' || c == '_' || c == '$' || c == '.'; } 
   function isExtended(c) { return isAlphaNum(c) || c == '+' || c == '-' || c == '>' || c == '<' || c == '='; } 
 
   Parser.prototype.getToken = function() {
