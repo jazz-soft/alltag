@@ -15,8 +15,8 @@
   ],
   "author": "jazz-soft (https://jazz-soft.net/)",
   "devDependencies": {
-    "eslint": "^8.23.0",
-    "mocha": "^10.0.0",
+    "eslint": "^8.35.0",
+    "mocha": "^10.2.0",
     "nyc": "^15.1.0"
   },
   "repository": {
