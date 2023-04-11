@@ -2,6 +2,7 @@
   /* istanbul ignore next */
   if (typeof exports === 'object' && typeof module !== 'undefined') {
     module.exports = factory();
+    module.exports.alltag = module.exports;
   }
   else if (typeof define === 'function' && define.amd) {
     define('alltag', [], factory);
